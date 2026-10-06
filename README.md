@@ -1,8 +1,10 @@
 # Stochastic predator-prey model: modeling lion and antelope population oscillations with random variables
 
-This is a mini-project I did for the course *Operations Research: Stochastic Models* (IE232) during my exchange at KAIST in Fall 2024. Each student had to work on a stochastic model of their choice, and I chose to model how the numbers of predators and prey in an ecosystem evolve over time, using lions and antelopes as an example.
+> Individual mini-project · *Operations Research: Stochastic Models* (IE232) · KAIST (exchange semester), Fall 2024 · Python, NumPy, Matplotlib
 
-Predator-prey dynamics are usually described with deterministic differential equations (the Lotka-Volterra model). I wanted to build a version from the distributions we used in the course instead, as a way to practise them on a system that changes over time. Births are counts of events, so I modeled them with Poisson distributions, and the number of animals that survive a month out of a given population is modeled with Binomial distributions. Most of the work was choosing the parameters and the formulas for the hunting and survival probabilities so that the populations behave in a plausible way.
+For this course, each student had to work on a stochastic model of their choice, and I chose to model how the numbers of predators and prey in an ecosystem evolve over time, using lions and antelopes as an example.
+
+Predator-prey dynamics are usually described with deterministic differential equations (the Lotka-Volterra model). I wanted to build a version from the distributions we used in the course instead, as a way to practise them on a system that changes over time. Births are counts of events, so I modeled them with Poisson distributions, and the number of animals that survive a month out of a given population is modeled with Binomial distributions. Most of the work was choosing the parameters and the formulas for the hunting and survival probabilities so that the populations behave in a plausible way. With the final parameters, the two populations oscillate irregularly over the 100 simulated years, with cycles of roughly 8 to 10 years.
 
 ## Model
 
@@ -25,34 +27,42 @@ The carrying capacities (2,000 antelopes and 50 lions) limit the growth of the a
 
 ![Antelope and lion populations over 100 years](figures/populations.png)
 
-The two populations oscillate over the 100 years of the simulation. The antelopes stay between 1,096 and 1,560 (mean 1,328) and the lions between 8 and 34 (mean 20). The oscillations are irregular, so their period is difficult to estimate: the autocorrelation of the antelope series has its first peak at about 8 years, while in my report I estimated about 10 years by eye from an earlier run. A high number of lions is usually followed about a year later by a low number of antelopes (correlation of −0.79 with a one-year lag).
+<sub><i>Monthly number of antelopes (top) and lions (bottom) over 100 years, in the seed-42 run.</i></sub>
+
+**Oscillations.** The two populations oscillate over the 100 years of the simulation. The antelopes stay between 1,096 and 1,560 (mean 1,328) and the lions between 8 and 34 (mean 20). The oscillations are irregular, so their period is difficult to estimate: the autocorrelation of the antelope series has its first peak at about 8 years, while in my report I estimated about 10 years by eye from an earlier run. A high number of lions is usually followed about a year later by a low number of antelopes (correlation of −0.79 with a one-year lag).
 
 ![Antelope and lion populations over the first 10 years](figures/populations_10_years.png)
 
-The first 10 years of the same run show one cycle in more detail. While there are many lions, the antelopes decrease from 1,500 to about 1,190 by month 45. The lions then have less food and decrease to 12 by month 72, and the antelopes increase again to about 1,465 by month 83, before the lions start to increase again.
+<sub><i>The first 120 months of the same run.</i></sub>
+
+**One cycle.** The first 10 years of the same run show one cycle in more detail. While there are many lions, the antelopes decrease from 1,500 to about 1,190 by month 45. The lions then have less food and decrease to 12 by month 72, and the antelopes increase again to about 1,465 by month 83, before the lions start to increase again.
 
 <p align="center">
   <img src="figures/population_bars.gif" width="49%" alt="Animated bar chart of the two populations, month by month">
   <img src="figures/population_lines.gif" width="49%" alt="Animated line chart of the two populations over 100 years">
 </p>
 
-The two animations show the same 100-year run month by month, as bars on the left and as lines on the right, with the antelopes on the blue axis and the lions on the orange one.
+<sub><i>The same 100-year run month by month, as bars (left) and as lines (right). Antelopes are on the blue axis and lions on the orange one.</i></sub>
 
 ## Limit cases
 
-I also ran the model with extreme starting populations over 10 years. Since the outcome is random, the notebook uses the first seed that produces each of the outcomes shown.
+I also ran the model with extreme starting populations over 10 years.
 
 ![Three limit cases over 10 years](figures/limit_cases.png)
 
-With 100 antelopes and 30 lions (left), the lions starve within two months, and the antelopes then grow without predators until they reach their carrying capacity of 2,000. This may be close to reality, since predators have difficulty finding rare prey, but the prey could also go extinct, which cannot happen in this model. With 2 lions and 1,500 antelopes, two outcomes are possible: the lions die before they reproduce (middle, after 7 months), or their number slowly increases (right). In the second case there are about 30 lions after 10 years, and the antelopes, which first grew to about 1,870, are decreasing back towards the range of the main run.
+<sub><i>Antelopes (top) and lions (bottom) over 10 years for three starting populations. Since the outcome is random, each panel uses the first seed that produces the outcome shown.</i></sub>
+
+**Few prey.** With 100 antelopes and 30 lions (left), the lions starve within two months, and the antelopes then grow without predators until they reach their carrying capacity of 2,000. This may be close to reality, since predators have difficulty finding rare prey, but the prey could also go extinct, which cannot happen in this model.
+
+**Few lions.** With 2 lions and 1,500 antelopes, two outcomes are possible: the lions die before they reproduce (middle, after 7 months), or their number slowly increases (right). In the second case there are about 30 lions after 10 years, and the antelopes, which first grew to about 1,870, are decreasing back towards the range of the main run.
 
 ## Possible improvements
 
-- Apart from the reproduction and predation rates, the parameters (carrying capacities, the square-root terms in the hunting probability and k) were chosen by hand so that the populations stay in a plausible range. The model is not fitted to observed population data.
-- Animals reproduce on their own, so a single remaining antelope can still have offspring. Each animal could be given a sex, with females being pregnant for a gestation period before giving birth.
-- There are no ages: newborns can reproduce right away and die at the same rate as adults. With age classes, animals could only reproduce after a certain age and would be more likely to die as they get older.
-- The hunting probability decreases when antelopes become rare, so the antelopes cannot be hunted to extinction. If that behaviour is wanted, the formula could penalize low prey density less.
-- The figures show a single run with a fixed seed. The population ranges and the length of the cycles vary from one run to another.
+- **Hand-tuned parameters.** Apart from the reproduction and predation rates, the parameters (carrying capacities, the square-root terms in the hunting probability and k) were chosen by hand so that the populations stay in a plausible range. The model is not fitted to observed population data.
+- **No sexes.** Animals reproduce on their own, so a single remaining antelope can still have offspring. Each animal could be given a sex, with females being pregnant for a gestation period before giving birth.
+- **No ages.** Newborns can reproduce right away and die at the same rate as adults. With age classes, animals could only reproduce after a certain age and would be more likely to die as they get older.
+- **No prey extinction.** The hunting probability decreases when antelopes become rare, so the antelopes cannot be hunted to extinction. If that behaviour is wanted, the formula could penalize low prey density less.
+- **One run.** The figures show a single run with a fixed seed. The population ranges and the length of the cycles vary from one run to another.
 
 ## How to run
 
