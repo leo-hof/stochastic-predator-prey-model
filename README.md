@@ -1,6 +1,6 @@
 # Stochastic predator-prey model: modeling lion and antelope population oscillations with random variables
 
-> Individual mini-project · *Operations Research: Stochastic Models* (IE232) · KAIST (exchange semester), Fall 2024 · Python, NumPy, Matplotlib
+> Individual mini-project · *Operations Research: Stochastic Models* (IE232) · KAIST (exchange year), Fall 2024 · Python, NumPy, Matplotlib
 
 For this course, each student had to work on a stochastic model of their choice, and I chose to model how the numbers of predators and prey in an ecosystem evolve over time, using lions and antelopes as an example.
 
